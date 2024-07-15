@@ -1,7 +1,7 @@
 main:
-ipush 1
-pop r0
-spush Hello world!\n
-pop r1
-syscall
+    ipush 1
+    pop r0
+    spush Hello world!\n
+    pop r1
+    syscall
 lend
