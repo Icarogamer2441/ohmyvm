@@ -87,7 +87,7 @@ def execute2(bytecode):
             ip += strlen
             stack.append(value)
             valuetoreoasm = value.replace(" ", "\\s").replace("\n", "\\n")
-            reomasmedcode[0] += f"  spush {value}\n"
+            reomasmedcode[0] += f"  spush {valuetoreoasm}\n"
         elif byte == OP_PUSHREG:
             strlen = bytecode[ip]
             ip += 1
