@@ -131,7 +131,7 @@ def execute2(bytecode):
             ip += 1
             label = bytecode[ip:ip + namelen].decode("utf-8")
             ip += namelen
-            execute2(label)
+            execute2(labels[label])
         elif byte == OP_CMP:
             reg1len = bytecode[ip]
             ip += 1
