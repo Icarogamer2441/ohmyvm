@@ -82,13 +82,13 @@ if __name__ == "__main__":
         sys.exit(1)
     else:
         if sys.argv[1].endswith(".ola"):
-            if sys.argv[2].endswith(".om"):
+            if sys.argv[2].endswith(".oasm"):
                 with open(sys.argv[1], "r") as inp:
                     output = compiler(inp.read())
                 with open(sys.argv[2], "w") as out:
                     out.write(compiler(output))
             else:
-                print("Error: use .om file extension for output file!")
+                print("Error: use .oasm file extension for output file!")
                 sys.exit(1)
         else:
             print("Error: use .ola file extension for input file!")
