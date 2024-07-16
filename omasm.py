@@ -59,8 +59,8 @@ def compiler(code):
                 bytecode.append(OP_SYSCALL)
             elif parts[0] == "spush":
                 bytecode.append(OP_PUSHSTR)
-                bytecode.append(len(line[7:].replace("\\n", "\n").replace("\\s", " ")))
-                bytecode.extend(line[7:].replace("\\n", "\n").replace("\\s", " ").encode("utf-8"))
+                bytecode.append(len(" ".join(parts[1:]).replace("\\n", "\n").replace("\\s", " ")))
+                bytecode.extend(" ".join(parts[1:]).replace("\\n", "\n").replace("\\s", " ").encode("utf-8"))
             elif parts[0] == "rpush":
                 reg = parts[1]
                 if reg in regs:
