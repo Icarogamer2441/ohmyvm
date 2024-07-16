@@ -2,7 +2,7 @@ import sys
 
 bytecode = bytearray()
 
-regs = ["r0", "r1", "r2", "r3", "r4", "r5"]
+regs = ["r0", "r1", "r2", "r3", "taa", "tba", "tca", "dao", "dbo", "dco", "ddo"]
 variables = []
 
 OP_PUSH = 1
@@ -154,7 +154,7 @@ def compiler(code):
                 name = parts[1].replace(",","")
                 reg = parts[2]
                 variables.append(name)
-                bytecode.append(OP_INTSET)
+                bytecode.append(OP_REGSET)
                 bytecode.append(len(name))
                 bytecode.extend(name.encode("utf-8"))
                 bytecode.append(len(reg))
