@@ -86,7 +86,7 @@ if __name__ == "__main__":
                 with open(sys.argv[1], "r") as inp:
                     output = compiler(inp.read())
                 with open(sys.argv[2], "w") as out:
-                    out.write(compiler(output))
+                    out.write(output)
             else:
                 print("Error: use .oasm file extension for output file!")
                 sys.exit(1)
