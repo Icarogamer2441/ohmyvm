@@ -60,7 +60,7 @@ def compiler(code):
                     elif token in variables:
                         out[0] += f"  vpush {token}\n"
                     elif token in functions:
-                        out[0] += f"  call {token}"
+                        out[0] += f"  call {token}\n"
                     else:
                         print(f"Error: unknown token: {token}")
                         sys.exit(1)
