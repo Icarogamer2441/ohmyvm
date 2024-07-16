@@ -14,6 +14,6 @@ example of file (you can use any extension but i use .oasm for no reason):
 you can only create output files with .om extension!
 ### run
 example of file:
-```
+```console
 ./bin/om out.om
 ```
