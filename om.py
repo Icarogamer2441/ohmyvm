@@ -293,7 +293,7 @@ REGS  | = {regs}
 """)
             if "--reoasm" in sys.argv:
                 print("main:")
-                print(reomasmedcode[0])
+                print(reomasmedcode[0], end="")
                 print("lend")
         else:
             print("Error: use .om file extension!")
