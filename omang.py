@@ -78,7 +78,7 @@ def compiler(code):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print(f"Usage: {sys.argv[0]} [input.ola] [output.om]")
+        print(f"Usage: {sys.argv[0]} [input.ola] [output.oasm]")
         sys.exit(1)
     else:
         if sys.argv[1].endswith(".ola"):
