@@ -1,0 +1,8 @@
+def main argc argv0:
+    "argc:\s" print
+    argc print
+    "\n" print
+    "argv[0]:\s" print
+    argv0 print
+    "\n" print
+end
