@@ -1,12 +1,17 @@
 import sys
 
-regs = {"r0": 0, "r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0}
+regs = {"r0": 0, "r1": 0, "r2": 0, "r3": 0, "taa": 0, "tba": 0, "tca": 0, "dao": 0, "dbo": 0, "dco": 0, "ddo": 0}
 variables = {}
 labels = {}
 
-stack = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+stack = []
 compare = []
+for arg in sys.argv[::-1]:
+    if arg == sys.argv[0]:
+        break
+    else:
+        stack.append(arg)
+stack.append(len(sys.argv[1:]))
 
 OP_PUSH = 1
 OP_POP = 2
@@ -35,54 +40,35 @@ reomasmedcode = [""]
 
 def execute2(bytecode):
     ip = 0
-    sp = [0]
     while ip < len(bytecode):
         byte = bytecode[ip]
         ip += 1
 
-        if sp[0] > len(stack) - 1:
-            print("Warning: stack over flow")
-            sp[0] -= 1
-        elif sp[0] < 0:
-            print("Warning: stack under flow")
-            sp[0] += 1
-
         if byte == OP_PUSH:
             value = bytecode[ip]
             ip += 1
-            stack[sp[0]] = value
-            sp[0] += 1
+            stack.append(value)
             reomasmedcode[0] += f"  ipush {value}\n"
         elif byte == OP_POP:
             reglen = bytecode[ip]
             ip += 1
             regname = bytecode[ip:ip + reglen].decode('utf-8')
             ip += reglen
-            sp[0] -= 1
-            regs[regname] = stack[sp[0]]
-            stack[sp[0]] = 0
+            regs[regname] = stack.pop()
             reomasmedcode[0] += f"  pop {regname}\n"
         elif byte == OP_SUM:
             if sp[0] >= 2:
-                sp[0] -= 1
-                a = stack[sp[0]]
-                stack[sp[0]] = 0
-                sp[0] -= 1
-                b = stack[sp[0]]
-                stack[sp[0]] = b + a
-                sp[0] += 1
+                a = stack.pop()
+                b = stack.pop()
+                stack.append(b + a)
                 reomasmedcode[0] += f"  sum\n"
             else:
                 print("Warning: you need to have 2 items or more inside the stack to do sum")
         elif byte == OP_SUB:
             if sp[0] >= 2:
-                sp[0] -= 1
-                a = stack[sp[0]]
-                stack[sp[0]] = 0
-                sp[0] -= 1
-                b = stack[sp[0]]
-                stack[sp[0]] = b - a
-                sp[0] += 1
+                a = stack.pop()
+                b = stack.pop()
+                stack.append(b - a)
                 reomasmedcode[0] += f"  sub\n"
             else:
                 print("Warning: you need to have 2 items or more inside the stack to do sub")
@@ -99,16 +85,14 @@ def execute2(bytecode):
             ip += 1
             value = bytecode[ip:ip + strlen].decode("utf-8")
             ip += strlen
-            stack[sp[0]] = value
-            sp[0] += 1
+            stack.append(value)
             reomasmedcode[0] += f"  spush {value}\n"
         elif byte == OP_PUSHREG:
             strlen = bytecode[ip]
             ip += 1
             reg = bytecode[ip:ip + strlen].decode("utf-8")
-            stack[sp[0]] = regs[reg]
             ip += strlen
-            sp[0] += 1
+            stack.append(regs[reg])
             reomasmedcode[0] += f"  rpush {reg}\n"
         elif byte == OP_GET:
             reglen = bytecode[ip]
@@ -138,8 +122,7 @@ def execute2(bytecode):
             ip += 1
             name = bytecode[ip:ip + namelen].decode("utf-8")
             ip += namelen
-            stack[sp[0]] = variables[name]
-            sp[0] += 1
+            stack.append(variables[name])
             reomasmedcode[0] += f"  vpush {name}\n"
         elif byte == OP_RET:
             break
@@ -262,7 +245,7 @@ def execute2(bytecode):
             regname = bytecode[ip:ip + reglen].decode("utf-8")
             ip += reglen
             variables[name] = regs[regname]
-            reomasmedcode[0] += f"  rset {regname}\n"
+            reomasmedcode[0] += f"  rset {name}, {regname}\n"
 
 def execute1(bytecode):
     ip = 0
