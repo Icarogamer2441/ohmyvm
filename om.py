@@ -35,6 +35,7 @@ OP_JG = 19
 OP_JLE = 20
 OP_JGE = 21
 OP_REGSET = 22
+OP_HALT = 23
 in_label = [False]
 reomasmedcode = [""]
 
@@ -247,6 +248,8 @@ def execute2(bytecode):
             ip += reglen
             variables[name] = regs[regname]
             reomasmedcode[0] += f"  rset {name}, {regname}\n"
+        elif byte == OP_HALT:
+            sys.exit(0)
 
 def execute1(bytecode):
     ip = 0
@@ -270,7 +273,6 @@ def execute1(bytecode):
                 ip += 3
             else:
                 labels[labelname[0]].append(byte)
-    execute2(labels["main"])
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -295,6 +297,7 @@ REGS  | = {regs}
                 print("main:")
                 print(reomasmedcode[0], end="")
                 print("lend")
+            execute2(labels["main"])
         else:
             print("Error: use .om file extension!")
             sys.exit(1)
