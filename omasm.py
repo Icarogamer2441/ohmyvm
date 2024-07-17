@@ -28,6 +28,8 @@ OP_JLE = 20
 OP_JGE = 21
 OP_REGSET = 22
 OP_HALT = 23
+OP_DUP = 24
+OP_OVER = 25
 
 def compiler(code):
     lines = code.splitlines()
@@ -160,8 +162,12 @@ def compiler(code):
                 bytecode.extend(name.encode("utf-8"))
                 bytecode.append(len(reg))
                 bytecode.extend(reg.encode("utf-8"))
-            elif parts[0] == "halt":
+            elif parts[0] == "hlt":
                 bytecode.append(OP_HALT)
+            elif parts[0] == "dup":
+                bytecode.append(OP_DUP)
+            elif parts[0] == "over":
+                bytecode.append(OP_OVER)
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
