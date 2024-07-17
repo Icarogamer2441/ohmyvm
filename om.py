@@ -1,4 +1,5 @@
 import sys
+import keyboard
 
 regs = {"r0": 0, "r1": 0, "r2": 0, "r3": 0, "taa": 0, "tba": 0, "tca": 0, "dao": 0, "dbo": 0, "dco": 0, "ddo": 0}
 variables = {}
@@ -36,6 +37,8 @@ OP_JLE = 20
 OP_JGE = 21
 OP_REGSET = 22
 OP_HALT = 23
+OP_DUP = 24
+OP_OVER = 25
 in_label = [False]
 reomasmedcode = [""]
 
@@ -101,7 +104,7 @@ def execute2(bytecode):
             ip += 1
             reg = bytecode[ip:ip + reglen].decode("utf-8")
             ip += reglen
-            regs[reg] = input()
+            regs[reg] = keyboard.read_event().name
             reomasmedcode[0] += f"  get {reg}\n"
         elif byte == OP_JMP:
             namelen = bytecode[ip]
@@ -250,6 +253,16 @@ def execute2(bytecode):
             reomasmedcode[0] += f"  rset {name}, {regname}\n"
         elif byte == OP_HALT:
             sys.exit(0)
+        elif byte == OP_DUP:
+            a = stack.pop()
+            stack.append(a)
+            stack.append(a)
+        elif byte == OP_OVER:
+            a = stack.pop()
+            b = stack.pop()
+            stack.append(b)
+            stack.append(a)
+            stack.append(b)
 
 def execute1(bytecode):
     ip = 0
